@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:movieapp/models/movies.model.dart';
+import 'package:movieapp/models/movies_model.dart';
 import 'package:movieapp/repositories/movies_repository.dart';
 
 class MovieController {
@@ -9,9 +10,19 @@ class MovieController {
   }
 
   ValueNotifier<Movies?> movies = ValueNotifier<Movies?>(null);
+  Movies? _cachedMovies;
 
-  fetch () async {
-    movies.value = await _moviesRepository.getMovies();
+  onChanged(String value) {
+    List<Movie> list = _cachedMovies!.listMoveies
+        .where(
+          (e) => e.toString().toLowerCase().contains(value.toLowerCase()),
+        )
+        .toList();
+         movies.value = movies.value!.copyWith(listMoveies: list);
   }
 
+  fetch() async {
+    movies.value = await _moviesRepository.getMovies();
+    _cachedMovies = movies.value;
+  }
 }

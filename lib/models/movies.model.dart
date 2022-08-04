@@ -1,3 +1,5 @@
+import 'package:flutter/foundation.dart';
+
 import 'package:movieapp/models/movies_model.dart';
 
 class Movies {
@@ -36,5 +38,45 @@ class Movies {
       data['results'] = this.listMoveies.map((v) => v.toJson()).toList();
     }
     return data;
+  }
+
+
+
+  @override
+  String toString() {
+    return 'Movies(page: $page, totalResults: $totalResults, totalPages: $totalPages, listMoveies: $listMoveies)';
+  }
+
+  @override
+  bool operator ==(Object other) {
+    if (identical(this, other)) return true;
+  
+    return other is Movies &&
+      other.page == page &&
+      other.totalResults == totalResults &&
+      other.totalPages == totalPages &&
+      listEquals(other.listMoveies, listMoveies);
+  }
+
+  @override
+  int get hashCode {
+    return page.hashCode ^
+      totalResults.hashCode ^
+      totalPages.hashCode ^
+      listMoveies.hashCode;
+  }
+
+  Movies copyWith({
+    int? page,
+    int? totalResults,
+    int? totalPages,
+    List<Movie>? listMoveies,
+  }) {
+    return Movies(
+      page: page ?? this.page,
+      totalResults: totalResults ?? this.totalResults,
+      totalPages: totalPages ?? this.totalPages,
+      listMoveies: listMoveies ?? this.listMoveies,
+    );
   }
 }
